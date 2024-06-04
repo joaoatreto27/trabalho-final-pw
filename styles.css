@@ -88,10 +88,9 @@ main {
     width: 450px;
 }
 
-.city-state {
+.box-2 {
     display: flex;
     gap: 10px;
-    width: 450px;
 }
 
 #city {
@@ -100,4 +99,12 @@ main {
 
 #uf {
     width: 60px;
+}
+
+#price {
+    width: 100px;
+}
+
+#qtd {
+    width: 340px;
 }
