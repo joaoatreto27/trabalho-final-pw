@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Fornecedor</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./../public/styles.css">
 </head>
 <body>
     <main>
-        <form action="" class="register-form">
+        <form action="/register" method="POST" class="register-form">
             <h2>Cadastrar Fornecedor</h2>
             <div class="box">
                 <label for="name">Nome:</label>
@@ -40,9 +40,9 @@
                 <label for="address">Endereço:</label>
                 <input type="text" name="address" class="address" id="address">
             </div>
-            <a href="" class="btn">Registrar</a>                       
+            <button type="submit" href="" class="btn">Registrar</button>                       
         </form>
     </main>
-    <script src="./script.js"></script>
+    <script src="./../public/script.js"></script>
 </body>
 </html>
