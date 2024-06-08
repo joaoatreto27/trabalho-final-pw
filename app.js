@@ -47,6 +47,22 @@ app.get('/cadastro-fornecedor.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'cadastro-fornecedor.html'));
 });
 
+app.get('/fornecedores.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'fornecedores.html'));
+});
+
+app.get('/fornecedores', (req, res) => {
+    const query = 'SELECT * FROM fornecedor';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar fornecedores:', err);
+            res.status(500).send('Erro ao buscar fornecedores.');
+            return;
+        }
+        res.json(results);
+    });
+});
+
 app.get('/cadastro-produto.html', (req, res) => {
     const query = 'SELECT id, nome FROM fornecedor';
     db.query(query, (err, results) => {
@@ -98,7 +114,7 @@ const upload = multer({ storage: storage });
 app.post('/register-product', upload.single('image'), (req, res) => {
     const { prod_name, price, qtd, provider, desc } = req.body;
     const imagePath = req.file.path.replace(/\\/g, '/').substring(6);
-    
+
     const insertQuery = 'INSERT INTO produto (nome, preco, quantidade, fornecedor, img_prod, descr) VALUES (?, ?, ?, ?, ?, ?)';
     db.execute(insertQuery, [prod_name, price, qtd, provider, desc, imagePath], (err, results) => {
         if (err) {

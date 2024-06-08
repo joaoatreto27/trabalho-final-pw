@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Fornecedores</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <main class="main-results">
+        <h2>Lista de Fornecedores</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CNPJ</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Cidade</th>
+                    <th>UF</th>
+                    <th>Endereço</th>
+                </tr>
+            </thead>
+            <tbody id="fornecedores-tbody">
+            </tbody>
+        </table>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/fornecedores')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('fornecedores-tbody');
+                    data.forEach(fornecedor => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${fornecedor.id}</td>
+                            <td>${fornecedor.nome}</td>
+                            <td>${fornecedor.cnpj}</td>
+                            <td>${fornecedor.email}</td>
+                            <td>${fornecedor.telefone}</td>
+                            <td>${fornecedor.cidade}</td>
+                            <td>${fornecedor.uf}</td>
+                            <td>${fornecedor.endereco}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar fornecedores:', error));
+        });
+    </script>
+</body>
+</html>
