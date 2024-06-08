@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
 const port = 3000;
@@ -83,10 +84,23 @@ app.post('/register', (req, res) => {
     });
 });
 
-app.post('/register-product', (req, res) => {
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './public/uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/register-product', upload.single('image'), (req, res) => {
     const { prod_name, price, qtd, provider, desc } = req.body;
-    const insertQuery = 'INSERT INTO produto (nome, preco, quantidade, fornecedor, descr) VALUES (?, ?, ?, ?, ?)';
-    db.execute(insertQuery, [prod_name, price, qtd, provider, desc], (err, results) => {
+    const imagePath = req.file.path.replace(/\\/g, '/').substring(6);
+    
+    const insertQuery = 'INSERT INTO produto (nome, preco, quantidade, fornecedor, img_prod, descr) VALUES (?, ?, ?, ?, ?, ?)';
+    db.execute(insertQuery, [prod_name, price, qtd, provider, desc, imagePath], (err, results) => {
         if (err) {
             console.error('Erro ao inserir produto:', err);
             res.status(500).send('Erro ao cadastrar produto.');

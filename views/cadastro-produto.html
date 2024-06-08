@@ -8,7 +8,7 @@
 </head>
 <body>
     <main>
-        <form action="/register-product" method="POST" class="register-form">
+        <form action="/register-product" method="POST" enctype="multipart/form-data" class="register-form">
             <h2>Cadastrar Produto</h2>
             <div class="box">
                 <label for="prod_name">Nome:</label>
@@ -33,6 +33,11 @@
                 <label for="desc">Descrição:</label>
                 <textarea name="desc" class="desc" id="desc" rows="3"></textarea>
             </div>
+            <div class="box">
+                <label for="image">Imagem:</label>
+                <input type="file" name="image" class="image" id="image" accept="image/*" onchange="previewImage(event)" required>
+                <img id="preview" src="#" alt="Pré-visualização da imagem" style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;">
+            </div>
             <button type="submit" href="" class="btn">Registrar</button>
         </form>
     </main>
@@ -56,6 +61,21 @@
                 })
                 .catch(error => console.error('Erro ao carregar fornecedores:', error));
         };
+
+        function previewImage(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
 </body>
 </html>
