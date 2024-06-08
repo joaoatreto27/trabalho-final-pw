@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trabalho Final PW</title>
-    <link rel="stylesheet" href="./../public/styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <main>
-        <form action="" class="login-form">
+        <form action="/login" method="POST" class="login-form">
             <h1>Faça o Login</h1>
             <div class="box">
                 <label for="user">Usuário:</label>
@@ -18,7 +18,7 @@
                 <label for="password">Senha:</label>
                 <input type="password" name="password" class="password" id="password">
             </div>
-            <a class="btn" href="./central.html">Entrar</a>
+            <button type="submit" class="btn" href="./central.html">Entrar</button>
         </form>
     </main>
     <script src="./../public/script.js"></script>
