@@ -8,11 +8,11 @@
 </head>
 <body>
     <main>
-        <form action="" class="register-form">
+        <form action="/register-product" method="POST" class="register-form">
             <h2>Cadastrar Produto</h2>
             <div class="box">
-                <label for="name">Nome:</label>
-                <input type="text" name="prod-name" class="prod-name" id="prod-name">
+                <label for="prod_name">Nome:</label>
+                <input type="text" name="prod_name" class="prod_name" id="prod_name">
             </div>
             <div class="box-2">
                 <div class="box">
@@ -26,14 +26,36 @@
             </div>
             <div class="box">
                 <label for="provider">Fornecedor:</label>
+                <select name="provider" class="provider" id="provider">
+                </select>
             </div>
             <div class="box">
                 <label for="desc">Descrição:</label>
                 <textarea name="desc" class="desc" id="desc" rows="3"></textarea>
             </div>
-            <a href="" class="btn">Registrar</a>
+            <button type="submit" href="" class="btn">Registrar</button>
         </form>
     </main>
-    <script src="./../public/script.js"></script>
+    <script>
+        function populateProvidersSelect(fornecedores) {
+            const select = document.getElementById('provider');
+
+            fornecedores.forEach(fornecedor => {
+                const option = document.createElement('option');
+                option.value = fornecedor.id;
+                option.textContent = fornecedor.nome;
+                select.appendChild(option);
+            });
+        }
+
+        window.onload = function() {
+            fetch('/fornecedores')
+                .then(response => response.json())
+                .then(data => {
+                    populateProvidersSelect(data);
+                })
+                .catch(error => console.error('Erro ao carregar fornecedores:', error));
+        };
+    </script>
 </body>
 </html>

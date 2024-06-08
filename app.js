@@ -8,7 +8,8 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -46,7 +47,27 @@ app.get('/cadastro-fornecedor.html', (req, res) => {
 });
 
 app.get('/cadastro-produto.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'cadastro-produto.html'));
+    const query = 'SELECT id, nome FROM fornecedor';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Erro ao consultar fornecedores:', err);
+            res.status(500).send('Erro ao carregar fornecedores.');
+            return;
+        }
+        res.sendFile(path.join(__dirname, 'views', 'cadastro-produto.html'));
+    });
+});
+
+app.get('/fornecedores', (req, res) => {
+    const query = 'SELECT id, nome FROM fornecedor';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Erro ao consultar fornecedores:', err);
+            res.status(500).json({ error: 'Erro ao consultar fornecedores.' });
+            return;
+        }
+        res.json(results);
+    });
 });
 
 app.post('/register', (req, res) => {
@@ -59,6 +80,19 @@ app.post('/register', (req, res) => {
         }
         console.log('Fornecedor registrado com sucesso!');
         res.redirect('/central');
+    });
+});
+
+app.post('/register-product', (req, res) => {
+    const { prod_name, price, qtd, provider, desc } = req.body;
+    const insertQuery = 'INSERT INTO produto (nome, preco, quantidade, fornecedor, descr) VALUES (?, ?, ?, ?, ?)';
+    db.execute(insertQuery, [prod_name, price, qtd, provider, desc], (err, results) => {
+        if (err) {
+            console.error('Erro ao inserir produto:', err);
+            res.status(500).send('Erro ao cadastrar produto.');
+            return;
+        }
+        res.send('Produto cadastrado com sucesso!');
     });
 });
 
