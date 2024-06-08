@@ -56,7 +56,6 @@ app.get('/fornecedores', (req, res) => {
     db.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao buscar fornecedores:', err);
-            res.status(500).send('Erro ao buscar fornecedores.');
             return;
         }
         res.json(results);
@@ -68,10 +67,24 @@ app.get('/cadastro-produto.html', (req, res) => {
     db.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao consultar fornecedores:', err);
-            res.status(500).send('Erro ao carregar fornecedores.');
             return;
         }
         res.sendFile(path.join(__dirname, 'views', 'cadastro-produto.html'));
+    });
+});
+
+app.get('/produtos.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'produtos.html'));
+});
+
+app.get('/produtos', (req, res) => {
+    const query = 'SELECT * FROM produto';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar produtos:', err);
+            return;
+        }
+        res.json(results);
     });
 });
 
@@ -80,7 +93,6 @@ app.get('/fornecedores', (req, res) => {
     db.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao consultar fornecedores:', err);
-            res.status(500).json({ error: 'Erro ao consultar fornecedores.' });
             return;
         }
         res.json(results);
@@ -93,7 +105,6 @@ app.post('/register', (req, res) => {
     db.execute(query, [name, cnpj, email, phone, city, uf, address], (err, results) => {
         if (err) {
             console.error('Erro ao inserir dados no banco de dados:', err);
-            return res.status(500).send('Erro ao registrar fornecedor.');
         }
         console.log('Fornecedor registrado com sucesso!');
         res.redirect('/central');
@@ -116,13 +127,13 @@ app.post('/register-product', upload.single('image'), (req, res) => {
     const imagePath = req.file.path.replace(/\\/g, '/').substring(6);
 
     const insertQuery = 'INSERT INTO produto (nome, preco, quantidade, fornecedor, img_prod, descr) VALUES (?, ?, ?, ?, ?, ?)';
-    db.execute(insertQuery, [prod_name, price, qtd, provider, desc, imagePath], (err, results) => {
+    db.execute(insertQuery, [prod_name, price, qtd, provider, imagePath, desc], (err, results) => {
         if (err) {
             console.error('Erro ao inserir produto:', err);
-            res.status(500).send('Erro ao cadastrar produto.');
             return;
         }
-        res.send('Produto cadastrado com sucesso!');
+        res.redirect('/central');
+        console.log('Produto cadastrado com sucesso!');
     });
 });
 

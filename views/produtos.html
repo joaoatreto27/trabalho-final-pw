@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <main class="main-results">
+        <h2>Lista de Produtos</h2>
+        <div class="card-container" id="produtos-container">
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/produtos')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('produtos-container');
+                    data.forEach(produto => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+                        card.innerHTML = `
+                            <img src="${produto.img_prod}" alt="Imagem do Produto">
+                            <div class="card-content">
+                                <h3>${produto.nome}</h3>
+                                <p><strong>Preço:</strong> R$ ${produto.preco}</p>
+                                <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
+                                <p><strong>Fornecedor:</strong> ${produto.fornecedor}</p>
+                                <p>${produto.descr}</p>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar produtos:', error));
+        });
+    </script>
+</body>
+</html>
