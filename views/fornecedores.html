@@ -24,6 +24,7 @@
                     <th>Cidade</th>
                     <th>UF</th>
                     <th>Endereço</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="fornecedores-tbody">
@@ -52,6 +53,9 @@
                             <td>${fornecedor.cidade}</td>
                             <td>${fornecedor.uf}</td>
                             <td>${fornecedor.endereco}</td>
+                            <td>
+                                <button class="delete-button" onclick="deleteFornecedor(${fornecedor.id})">Excluir</button>
+                            </td>
                         `;
                         tableBody.appendChild(row);
                     });
@@ -62,6 +66,20 @@
         function searchFornecedores() {
             const query = document.getElementById('search-input').value;
             fetchFornecedores(query);
+        }
+
+        function deleteFornecedor(id) {
+            if (confirm('Tem certeza que deseja excluir este fornecedor?')) {
+                fetch(`/fornecedores/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            fetchFornecedores(); // Atualiza a lista de fornecedores
+                        } else {
+                            alert('Erro ao excluir o fornecedor.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao excluir o fornecedor:', error));
+            }
         }
     </script>
 </body>

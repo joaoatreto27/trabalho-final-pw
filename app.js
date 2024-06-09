@@ -67,6 +67,24 @@ app.get('/fornecedores', (req, res) => {
     });
 });
 
+// Excluir Fornecedor
+app.delete('/fornecedores/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM fornecedor WHERE id = ?';
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error('Erro ao excluir fornecedor:', err);
+            res.status(500).send('Erro ao excluir fornecedor.');
+            return;
+        }
+        if (result.affectedRows === 0) {
+            res.status(404).send('Fornecedor não encontrado.');
+        } else {
+            res.status(204).send();
+        }
+    });
+});
+
 app.get('/cadastro-produto.html', (req, res) => {
     const query = 'SELECT id, nome FROM fornecedor';
     db.query(query, (err, results) => {
