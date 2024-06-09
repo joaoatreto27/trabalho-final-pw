@@ -15,6 +15,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    flex-direction: column;
 }
 
 main {
@@ -114,6 +115,34 @@ main {
     width: 100%;
     padding: 5px;
     background: none;
+}
+
+.search-bar {
+    margin: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar input {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.search-bar input:focus {
+    border: 2px solid #4CAF50;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 table {

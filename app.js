@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 
@@ -52,7 +53,11 @@ app.get('/fornecedores.html', (req, res) => {
 });
 
 app.get('/fornecedores', (req, res) => {
-    const query = 'SELECT * FROM fornecedor';
+    const search = req.query.search || '';
+    let query = 'SELECT * FROM fornecedor';
+    if (search) {
+        query += ` WHERE nome LIKE '%${search}%' OR cnpj LIKE '%${search}%'`;
+    }
     db.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao buscar fornecedores:', err);
