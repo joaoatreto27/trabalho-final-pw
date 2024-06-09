@@ -101,6 +101,7 @@ app.get('/produtos', (req, res) => {
     });
 });
 
+// Excluir Produto
 app.delete('/produtos/:id', (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM produto WHERE id = ?';
@@ -114,6 +115,25 @@ app.delete('/produtos/:id', (req, res) => {
             res.status(404).send('Produto não encontrado.');
         } else {
             res.status(204).send();
+        }
+    });
+});
+
+// Atualizar Produto
+app.put('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const { nome, preco, quantidade, descr } = req.body;
+    const query = 'UPDATE produto SET nome = ?, preco = ?, quantidade = ?, descr = ? WHERE id = ?';
+    db.query(query, [nome, preco, quantidade, descr, id], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar produto:', err);
+            res.status(500).send('Erro ao atualizar produto.');
+            return;
+        }
+        if (result.affectedRows === 0) {
+            res.status(404).send('Produto não encontrado.');
+        } else {
+            res.status(200).send('Produto atualizado com sucesso.');
         }
     });
 });

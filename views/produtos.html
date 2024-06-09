@@ -16,6 +16,24 @@
         <div class="card-container" id="produtos-container">
         </div>
     </main>
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Produto</h2>
+            <form id="edit-form" class="modal-form">
+                <input type="hidden" id="edit-id">
+                <label for="edit-name">Nome:</label>
+                <input type="text" id="edit-name" required>
+                <label for="edit-price">Preço:</label>
+                <input type="text" id="edit-price" required>
+                <label for="edit-quantity">Quantidade:</label>
+                <input type="text" id="edit-quantity" required>
+                <label for="edit-description">Descrição:</label>
+                <textarea id="edit-description" rows="3" required></textarea>
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             fetchProdutos();
@@ -37,7 +55,8 @@
                                 <p><strong>Preço:</strong> R$ ${produto.preco}</p>
                                 <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
                                 <p><strong>Fornecedor:</strong> ${produto.fornecedor_nome}</p>
-                                <p>${produto.descricao}</p>
+                                <p>${produto.descr}</p>
+                                <button class="edit-button" onclick="openEditModal(${produto.id}, '${produto.nome}', '${produto.preco}', '${produto.quantidade}', '${produto.descr}')">Editar</button>
                                 <button class="delete-button" onclick="deleteProduto(${produto.id})">Excluir</button>
                             </div>
                         `;
@@ -63,6 +82,45 @@
                 })
                 .catch(error => console.error('Erro ao excluir o produto:', error));
         }
+
+        function openEditModal(id, nome, preco, quantidade, descr) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = nome;
+            document.getElementById('edit-price').value = preco;
+            document.getElementById('edit-quantity').value = quantidade;
+            document.getElementById('edit-description').value = descr;
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        document.getElementById('edit-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const nome = document.getElementById('edit-name').value;
+            const preco = document.getElementById('edit-price').value;
+            const quantidade = document.getElementById('edit-quantity').value;
+            const descr = document.getElementById('edit-description').value;
+
+            fetch(`/produtos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome, preco, quantidade, descr }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    fetchProdutos();
+                    closeModal();
+                } else {
+                    alert('Erro ao atualizar o produto.');
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar o produto:', error));
+        });
 
     </script>
 </body>
