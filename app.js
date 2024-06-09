@@ -83,7 +83,15 @@ app.get('/produtos.html', (req, res) => {
 });
 
 app.get('/produtos', (req, res) => {
-    const query = 'SELECT * FROM produto';
+    const search = req.query.search || '';
+    let query = `
+        SELECT produto.*, fornecedor.nome AS fornecedor_nome 
+        FROM produto 
+        JOIN fornecedor ON produto.fornecedor = fornecedor.id
+    `;
+    if (search) {
+        query += ` WHERE produto.nome LIKE '%${search}%' OR fornecedor.nome LIKE '%${search}%'`;
+    }
     db.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao buscar produtos:', err);

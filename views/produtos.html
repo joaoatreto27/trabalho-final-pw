@@ -7,17 +7,26 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <h2>Lista de Produtos</h2>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Pesquisar por Nome ou Fornecedor">
+        <button onclick="searchProdutos()">Pesquisar</button>
+    </div>
     <main class="main-results">
-        <h2>Lista de Produtos</h2>
         <div class="card-container" id="produtos-container">
         </div>
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/produtos')
+            fetchProdutos();
+        });
+
+        function fetchProdutos(query = '') {
+            fetch(`/produtos?search=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById('produtos-container');
+                    container.innerHTML = '';
                     data.forEach(produto => {
                         const card = document.createElement('div');
                         card.classList.add('card');
@@ -27,15 +36,20 @@
                                 <h3>${produto.nome}</h3>
                                 <p><strong>Preço:</strong> R$ ${produto.preco}</p>
                                 <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
-                                <p><strong>Fornecedor:</strong> ${produto.fornecedor}</p>
-                                <p>${produto.descr}</p>
+                                <p><strong>Fornecedor:</strong> ${produto.fornecedor_nome}</p>
+                                <p>${produto.descricao}</p>
                             </div>
                         `;
                         container.appendChild(card);
                     });
                 })
                 .catch(error => console.error('Erro ao buscar produtos:', error));
-        });
+        }
+
+        function searchProdutos() {
+            const query = document.getElementById('search-input').value;
+            fetchProdutos(query);
+        }
     </script>
 </body>
 </html>

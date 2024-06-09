@@ -111,6 +111,10 @@ main {
     width: 340px;
 }
 
+h2 {
+    margin-top: 50px;
+}
+
 .main-results {
     width: 100%;
     padding: 5px;
