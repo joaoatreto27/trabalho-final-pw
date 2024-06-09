@@ -215,3 +215,13 @@ tr:nth-child(even) {
     color: #4CAF50;
     margin-top: 10px;
 }
+
+.delete-button {
+    background-color: #ff4f4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}

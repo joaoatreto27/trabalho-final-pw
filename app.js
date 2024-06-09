@@ -101,6 +101,23 @@ app.get('/produtos', (req, res) => {
     });
 });
 
+app.delete('/produtos/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM produto WHERE id = ?';
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error('Erro ao excluir produto:', err);
+            res.status(500).send('Erro ao excluir produto.');
+            return;
+        }
+        if (result.affectedRows === 0) {
+            res.status(404).send('Produto não encontrado.');
+        } else {
+            res.status(204).send();
+        }
+    });
+});
+
 app.get('/fornecedores', (req, res) => {
     const query = 'SELECT id, nome FROM fornecedor';
     db.query(query, (err, results) => {

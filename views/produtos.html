@@ -38,6 +38,7 @@
                                 <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
                                 <p><strong>Fornecedor:</strong> ${produto.fornecedor_nome}</p>
                                 <p>${produto.descricao}</p>
+                                <button class="delete-button" onclick="deleteProduto(${produto.id})">Excluir</button>
                             </div>
                         `;
                         container.appendChild(card);
@@ -50,6 +51,19 @@
             const query = document.getElementById('search-input').value;
             fetchProdutos(query);
         }
+
+        function deleteProduto(id) {
+            fetch(`/produtos/${id}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        fetchProdutos();
+                    } else {
+                        alert('Erro ao excluir o produto.');
+                    }
+                })
+                .catch(error => console.error('Erro ao excluir o produto:', error));
+        }
+
     </script>
 </body>
 </html>
