@@ -67,6 +67,39 @@ app.get('/fornecedores', (req, res) => {
     });
 });
 
+app.get('/fornecedores/:id', (req, res) => {
+    const fornecedorId = req.params.id;
+    db.query('SELECT * FROM fornecedor WHERE id = ?', [fornecedorId], (err, result) => {
+        if (err) {
+            console.error('Erro ao buscar fornecedor:', err);
+            res.status(500).send('Erro ao buscar fornecedor.');
+        } else {
+            res.json(result[0]);
+        }
+    });
+});
+
+// Atualizar Fornecedor
+app.put('/fornecedores/:id', (req, res) => {
+    const fornecedorId = req.params.id;
+    const { nome, cnpj, email, telefone, cidade, uf, endereco } = req.body;
+    const query = `
+        UPDATE fornecedor SET nome = ?, cnpj = ?, email = ?, telefone = ?, cidade = ?, uf = ?, endereco = ?
+        WHERE id = ?
+    `;
+    db.query(query, [nome, cnpj, email, telefone, cidade, uf, endereco, fornecedorId], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar fornecedor:', err);
+            res.status(500).send('Erro ao atualizar fornecedor.');
+        } else if (result.affectedRows === 0) {
+            res.status(404).send('Fornecedor não encontrado.');
+        } else {
+            res.status(200).send('Fornecedor atualizado com sucesso.');
+        }
+    });
+});
+
+
 // Excluir Fornecedor
 app.delete('/fornecedores/:id', (req, res) => {
     const { id } = req.params;

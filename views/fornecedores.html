@@ -31,6 +31,30 @@
             </tbody>
         </table>
     </main>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Fornecedor</h2>
+            <form id="edit-form" class="modal-form">
+                <input type="hidden" id="edit-id">
+                <label for="edit-name">Nome:</label>
+                <input type="text" id="edit-name" required>
+                <label for="edit-cnpj">CNPJ:</label>
+                <input type="text" id="edit-cnpj" required>
+                <label for="edit-email">Email:</label>
+                <input type="email" id="edit-email" required>
+                <label for="edit-phone">Telefone:</label>
+                <input type="text" id="edit-phone" required>
+                <label for="edit-city">Cidade:</label>
+                <input type="text" id="edit-city" required>
+                <label for="edit-uf">UF:</label>
+                <input type="text" id="edit-uf" required>
+                <label for="edit-address">Endereço:</label>
+                <input type="text" id="edit-address" required>
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             fetchFornecedores();
@@ -54,6 +78,7 @@
                             <td>${fornecedor.uf}</td>
                             <td>${fornecedor.endereco}</td>
                             <td>
+                                <button class="edit-button" onclick="openEditModal(${fornecedor.id})">Editar</button>
                                 <button class="delete-button" onclick="deleteFornecedor(${fornecedor.id})">Excluir</button>
                             </td>
                         `;
@@ -73,7 +98,7 @@
                 fetch(`/fornecedores/${id}`, { method: 'DELETE' })
                     .then(response => {
                         if (response.ok) {
-                            fetchFornecedores(); // Atualiza a lista de fornecedores
+                            fetchFornecedores(); 
                         } else {
                             alert('Erro ao excluir o fornecedor.');
                         }
@@ -81,6 +106,57 @@
                     .catch(error => console.error('Erro ao excluir o fornecedor:', error));
             }
         }
+
+        function openEditModal(id) {
+            fetch(`/fornecedores/${id}`)
+                .then(response => response.json())
+                .then(fornecedor => {
+                    document.getElementById('edit-id').value = fornecedor.id;
+                    document.getElementById('edit-name').value = fornecedor.nome;
+                    document.getElementById('edit-cnpj').value = fornecedor.cnpj;
+                    document.getElementById('edit-email').value = fornecedor.email;
+                    document.getElementById('edit-phone').value = fornecedor.telefone;
+                    document.getElementById('edit-city').value = fornecedor.cidade;
+                    document.getElementById('edit-uf').value = fornecedor.uf;
+                    document.getElementById('edit-address').value = fornecedor.endereco;
+                    document.getElementById('editModal').style.display = 'block';
+                })
+                .catch(error => console.error('Erro ao buscar fornecedor:', error));
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        document.getElementById('edit-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const nome = document.getElementById('edit-name').value;
+            const cnpj = document.getElementById('edit-cnpj').value;
+            const email = document.getElementById('edit-email').value;
+            const telefone = document.getElementById('edit-phone').value;
+            const cidade = document.getElementById('edit-city').value;
+            const uf = document.getElementById('edit-uf').value;
+            const endereco = document.getElementById('edit-address').value;
+
+            fetch(`/fornecedores/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome, cnpj, email, telefone, cidade, uf, endereco }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    closeModal();
+                    fetchFornecedores();
+                } else {
+                    console.error('Erro ao atualizar fornecedor:', response);
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar fornecedor:', error));
+        });
+
     </script>
 </body>
 </html>
