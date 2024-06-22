@@ -21,7 +21,7 @@ body {
 main {
     min-width: 25%;
     background: #85e6c0;
-    padding: 50px;
+    padding: 40px;
     border-radius: 20px;
 }
 
@@ -58,7 +58,8 @@ main {
     border: 3px solid #6bb39b;
 }
 
-.btn {
+.btn,
+.btn-voltar {
     height: 35px;
     border: none;
     border-radius: 5px;
@@ -72,11 +73,22 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 .btn:hover {
     background: #daf3ea;
     color: #0b0b0d;
+}
+
+.btn-voltar:hover {
+    background: #85e6c0;
+}
+
+.box-voltar {
+    display: flex;
+    width: 100%;
+    padding: 10px;
 }
 
 .register-form {
@@ -109,10 +121,6 @@ main {
 
 #qtd {
     width: 340px;
-}
-
-h2 {
-    margin-top: 50px;
 }
 
 .main-results {

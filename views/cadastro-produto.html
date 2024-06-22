@@ -7,31 +7,34 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+    <div class="box-voltar">
+        <a href="./central.html" class="btn-voltar">Voltar</a>
+    </div>
     <main>
         <form action="/register-product" method="POST" enctype="multipart/form-data" class="register-form">
             <h2>Cadastrar Produto</h2>
             <div class="box">
                 <label for="prod_name">Nome:</label>
-                <input type="text" name="prod_name" class="prod_name" id="prod_name">
+                <input type="text" name="prod_name" class="prod_name" id="prod_name" required>
             </div>
             <div class="box-2">
                 <div class="box">
                     <label for="price">Preço:</label>
-                    <input type="text" name="price" class="price" id="price">
+                    <input type="text" name="price" class="price" id="price" required>
                 </div>
                 <div class="box">
                     <label for="qtd">Quantidade:</label>
-                    <input type="text" name="qtd" class="qtd" id="qtd">
+                    <input type="text" name="qtd" class="qtd" id="qtd" required>
                 </div>
             </div>
             <div class="box">
                 <label for="provider">Fornecedor:</label>
-                <select name="provider" class="provider" id="provider">
+                <select name="provider" class="provider" id="provider" required>
                 </select>
             </div>
             <div class="box">
                 <label for="desc">Descrição:</label>
-                <textarea name="desc" class="desc" id="desc" rows="3"></textarea>
+                <textarea name="desc" class="desc" id="desc" rows="3" required></textarea>
             </div>
             <div class="box">
                 <label for="image">Imagem:</label>
