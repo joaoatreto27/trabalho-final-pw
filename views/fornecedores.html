@@ -43,11 +43,11 @@
                 <label for="edit-name">Nome:</label>
                 <input type="text" id="edit-name" required>
                 <label for="edit-cnpj">CNPJ:</label>
-                <input type="text" id="edit-cnpj" required>
+                <input type="text" id="edit-cnpj" oninput="this.value = mascaraCnpj(this.value)" maxlength="18" required>
                 <label for="edit-email">Email:</label>
                 <input type="email" id="edit-email" required>
                 <label for="edit-phone">Telefone:</label>
-                <input type="text" id="edit-phone" required>
+                <input type="text" id="edit-phone" oninput="this.value = mascaraTelefone(this.value)" maxlength="15" required>
                 <label for="edit-city">Cidade:</label>
                 <input type="text" id="edit-city" required>
                 <label for="edit-uf">UF:</label>
@@ -160,6 +160,22 @@
             .catch(error => console.error('Erro ao atualizar fornecedor:', error));
         });
 
+        // Mascaras
+        function mascaraCnpj(cnpj) {
+            cnpj = cnpj.replace(/\D/g, ''); 
+            cnpj = cnpj.replace(/^(\d{2})(\d)/, '$1.$2'); 
+            cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); 
+            cnpj = cnpj.replace(/\.(\d{3})(\d)/, '.$1/$2'); 
+            cnpj = cnpj.replace(/(\d{4})(\d)/, '$1-$2'); 
+            return cnpj;
+        }
+
+        function mascaraTelefone(telefone) {
+            telefone = telefone.replace(/\D/g, ''); 
+            telefone = telefone.replace(/^(\d{2})(\d)/g, '($1) $2'); 
+            telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2'); 
+            return telefone;
+        }
     </script>
 </body>
 </html>

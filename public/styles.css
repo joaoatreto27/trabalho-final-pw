@@ -294,3 +294,9 @@ tr:nth-child(even) {
     border-radius: 5px;
     cursor: pointer;
 }
+
+#error {
+    color: #ff4f4f;
+    font-weight: 700;
+    visibility: hidden;
+}

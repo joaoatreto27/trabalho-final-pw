@@ -6,9 +6,10 @@
     <title>Trabalho Final PW</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
+</style>
 <body>
     <main>
-        <form action="/login" method="POST" class="login-form">
+        <form action="/login" method="POST" class="login-form" id="login-form">
             <h1>Faça o Login</h1>
             <div class="box">
                 <label for="user">Usuário:</label>
@@ -18,8 +19,31 @@
                 <label for="password">Senha:</label>
                 <input type="password" name="password" class="password" id="password">
             </div>
+            <span id="error">Usuário ou senha inválidos.</span>
             <button type="submit" class="btn" href="./central.html">Entrar</button>
         </form>
     </main>
 </body>
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const username = document.getElementById('user').value.trim();
+                    const password = document.getElementById('password').value.trim();
+
+                    if (username === 'admin' && password === 'admin') {
+                        this.submit();
+                    } else {
+                        const errorSpan = document.getElementById('error');
+                        if (errorSpan) {
+                            errorSpan.style.visibility = 'visible';
+                        }
+                    }
+                });
+            }
+        });
+</script>
 </html>

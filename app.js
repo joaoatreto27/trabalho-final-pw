@@ -36,7 +36,8 @@ app.post('/login', (req, res) => {
     if (user === 'admin' && password === 'admin') {
         res.redirect('/central');
     } else {
-        res.send('Credenciais inválidas. Por favor, tente novamente.');
+        console.log('Credenciais inválidas. Por favor, tente novamente.');
+        res.redirect('/index.html');
     }
 });
 
@@ -208,7 +209,7 @@ app.post('/register', (req, res) => {
             console.error('Erro ao inserir dados no banco de dados:', err);
         }
         console.log('Fornecedor registrado com sucesso!');
-        res.redirect('/central');
+        res.redirect('/fornecedores.html');
     });
 });
 
@@ -233,7 +234,7 @@ app.post('/register-product', upload.single('image'), (req, res) => {
             console.error('Erro ao inserir produto:', err);
             return;
         }
-        res.redirect('/central');
+        res.redirect('/produtos.html');
         console.log('Produto cadastrado com sucesso!');
     });
 });
@@ -241,3 +242,5 @@ app.post('/register-product', upload.single('image'), (req, res) => {
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
+module.exports = app;
