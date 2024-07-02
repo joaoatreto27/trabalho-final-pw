@@ -75,15 +75,17 @@
         }
 
         function deleteProduto(id) {
-            fetch(`/produtos/${id}`, { method: 'DELETE' })
-                .then(response => {
-                    if (response.ok) {
-                        fetchProdutos();
-                    } else {
-                        alert('Erro ao excluir o produto.');
-                    }
-                })
-                .catch(error => console.error('Erro ao excluir o produto:', error));
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                fetch(`/produtos/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            fetchProdutos();
+                        } else {
+                            alert('Erro ao excluir o produto.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao excluir o produto:', error));
+            }
         }
 
         function openEditModal(id, nome, preco, quantidade, descr) {
